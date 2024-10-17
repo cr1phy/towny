@@ -5,4 +5,9 @@ edition = "2021"
 
 [dependencies]
 actix-web = { version = "4.9.0", features = ["macros"] }
+dotenvy = "0.15.7"
+listenfd = "1.0.1"
+log = "0.4.22"
+sea-orm = { version = "1.1.0", features = ["macros", "sqlx-postgres", "runtime-tokio-native-tls"] }
 tokio = { version = "1.40.0", features = ["macros", "rt-multi-thread"] }
+tracing-subscriber = "0.3.18"

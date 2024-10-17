@@ -1,5 +1,6 @@
 use actix_web::{get, post, web, HttpResponse};
 
+// TODO: status of api
 #[get("/")]
 async fn root() -> HttpResponse {
     HttpResponse::Ok().json("Ok!")
@@ -36,5 +37,8 @@ async fn play() -> HttpResponse {
 }
 
 pub fn init(cfg: &mut web::ServiceConfig) {
-    cfg.service(root).service(create_user).service(get_user).service(delete_user);
+    cfg.service(root)
+        .service(create_user)
+        .service(get_user)
+        .service(delete_user);
 }

@@ -1,24 +1,47 @@
 mod handlers;
 
-use std::io;
+use std::{env, io};
 
-use actix_web::{
-    middleware,
-    App, HttpServer,
-};
+use actix_web::{middleware, web, App, HttpServer};
+use sea_orm::{Database, DbConn};
+use listenfd::ListenFd;
+
+#[derive(Clone)]
+struct AppState {
+    db: DbConn,
+}
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    HttpServer::new(move || {
+    tracing_subscriber::fmt::init();
+
+    dotenvy::dotenv().ok();
+    let db_url = env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
+    let host = env::var("HOST").expect("HOST is not set in .env file");
+    let port = env::var("PORT").expect("PORT is not set in .env file");
+    let server_url = format!("{host}:{port}");
+
+    let db = Database::connect(&db_url).await.unwrap();
+
+    let state = AppState { db };
+
+    let mut listenfd = ListenFd::from_env();
+    let mut server = HttpServer::new(move || {
         App::new()
+            .app_data(web::Data::new(state.clone()))
             .wrap(middleware::Logger::default())
             .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Compress::default())
             .configure(handlers::init)
-    })
-    .bind_auto_h2c("0.0.0.0:80")?
-    .run()
-    .await?;
+    });
+
+    server = match listenfd.take_tcp_listener(0)? {
+        Some(listener) => server.listen(listener)?,
+        None => server.bind(&server_url)?,
+    };
+
+    log::info!("Starting server at {server_url}");
+    server.run().await?;
 
     Ok(())
 }
