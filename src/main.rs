@@ -3,6 +3,7 @@ mod handlers;
 use std::{env, io};
 
 use actix_web::{middleware, web, App, HttpServer};
+use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DbConn};
 use listenfd::ListenFd;
 
@@ -22,6 +23,7 @@ async fn main() -> io::Result<()> {
     let server_url = format!("{host}:{port}");
 
     let db = Database::connect(&db_url).await.unwrap();
+    Migrator::up(&db, None).await.unwrap();
 
     let state = AppState { db };
 

@@ -11,7 +11,7 @@ async fn create_user() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
-#[get("/user")]
+#[get("/user/{id}")]
 async fn get_user() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
