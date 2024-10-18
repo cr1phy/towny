@@ -1,15 +1,18 @@
 mod handlers;
+mod services;
 
-use std::{env, io};
+use std::{env, io, sync::Arc};
 
 use actix_web::{middleware, web, App, HttpServer};
+use listenfd::ListenFd;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DbConn};
-use listenfd::ListenFd;
+use tokio::sync::Mutex;
 
 #[derive(Clone)]
 struct AppState {
     db: DbConn,
+    online_users: Arc<Mutex<u64>>,
 }
 
 #[tokio::main]
@@ -25,7 +28,10 @@ async fn main() -> io::Result<()> {
     let db = Database::connect(&db_url).await.unwrap();
     Migrator::up(&db, None).await.unwrap();
 
-    let state = AppState { db };
+    let state = AppState {
+        db,
+        online_users: Arc::new(Mutex::new(0)),
+    };
 
     let mut listenfd = ListenFd::from_env();
     let mut server = HttpServer::new(move || {
