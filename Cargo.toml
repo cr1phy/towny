@@ -3,6 +3,9 @@ name = "towny-api"
 version = "0.1.0"
 edition = "2021"
 
+[workspace]
+members = ["entity", "migration"]
+
 [dependencies]
 actix-web = { version = "4.9.0", features = ["macros"] }
 dotenvy = "0.15.7"
