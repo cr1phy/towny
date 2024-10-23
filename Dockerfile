@@ -29,7 +29,7 @@ RUN rm ./target/debug/deps/towny-api*; \
 
 # deploy stage
 FROM debian:buster-slim AS deploy
-ENV PORT=${PORT}
+ENV PORT=80
 
 # create app directory
 RUN mkdir app
@@ -44,7 +44,7 @@ RUN apt-get update; \
 COPY --from=build /app/target/release/towny-api .
 
 # expose port
-EXPOSE ${PORT}
+EXPOSE 80
 
 # run the binary
 CMD ["/app/towny-api"]
