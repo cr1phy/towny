@@ -1,7 +1,7 @@
 ARG RUST_VERSION=1.80
 
 # build stage
-FROM rust:${RUST_VERSION}-slim as build
+FROM rust:${RUST_VERSION}-slim AS build
 
 # install libpq, libsqlite and create new empty binary project
 RUN apt-get update; \
@@ -28,7 +28,7 @@ RUN rm ./target/debug/deps/towny-api*; \
     cargo build --release
 
 # deploy stage
-FROM debian:buster-slim
+FROM debian:buster-slim AS deploy
 
 # create app directory
 RUN mkdir app
@@ -43,7 +43,7 @@ RUN apt-get update; \
 COPY --from=build /app/target/release/towny-api .
 
 # expose port
-EXPOSE 8000
+EXPOSE ${PORT}
 
 # run the binary
 CMD ["/app/towny-api"]
