@@ -24,7 +24,7 @@ COPY ./migration ./migration
 COPY ./entity ./entity
 
 # rebuild app with project source
-RUN rm ./target/debug/deps/towny-api*; \
+RUN rm ./target/debug; \
     cargo build --release
 
 # deploy stage
@@ -37,7 +37,7 @@ WORKDIR /app
 
 # install libpq and libsqlite
 RUN apt-get update; \
-    apt-get install --no-install-recommends -y libpq-dev; \
+    apt-get install --no-install-recommends -y libpq-dev libssl-dev; \
     rm -rf /var/lib/apt/lists/*
 
 # copy binary and configuration files
