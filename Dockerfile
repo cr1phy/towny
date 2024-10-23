@@ -29,6 +29,7 @@ RUN rm ./target/debug/deps/towny-api*; \
 
 # deploy stage
 FROM debian:buster-slim AS deploy
+ENV PORT=${PORT}
 
 # create app directory
 RUN mkdir app
