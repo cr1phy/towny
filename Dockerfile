@@ -23,12 +23,8 @@ COPY ./src ./src
 COPY ./migration ./migration
 COPY ./entity ./entity
 
-# add .env and secret.key for Docker env
-RUN touch .env; \
-    mv src/secret.key.sample src/secret.key
-
 # rebuild app with project source
-RUN rm ./target/debug/deps/actix_web_rest_api_with_jwt*; \
+RUN rm ./target/debug/deps/towny-api*; \
     cargo build --release
 
 # deploy stage
