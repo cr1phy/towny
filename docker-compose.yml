@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: "towny-api"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
