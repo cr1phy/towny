@@ -24,7 +24,7 @@ COPY ./migration ./migration
 COPY ./entity ./entity
 
 # rebuild app with project source
-RUN rm ./target/debug; \
+RUN rm -rf ./target; \
     cargo build --release
 
 # deploy stage
