@@ -17,7 +17,7 @@ pub struct Model {
     #[serde(skip_deserializing)]
     pub id: Uuid,
     pub email: String,
-    pub password: String,
+    pub password: Vec<u8>,
     pub name: String,
     pub money: f64,
     pub brilliants: i64,
@@ -54,7 +54,7 @@ impl ColumnTrait for Column {
         match self {
             Self::Id => ColumnType::Uuid.def(),
             Self::Email => ColumnType::String(StringLen::None).def().unique(),
-            Self::Password => ColumnType::String(StringLen::None).def(),
+            Self::Password => ColumnType::VarBinary(StringLen::None).def(),
             Self::Name => ColumnType::String(StringLen::None).def().unique(),
             Self::Money => ColumnType::Double.def(),
             Self::Brilliants => ColumnType::BigInteger.def(),

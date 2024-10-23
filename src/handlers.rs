@@ -4,7 +4,11 @@ use actix_web::{get, post, web, HttpResponse};
 use sea_orm::prelude::Uuid;
 use serde_json::json;
 
-use crate::{services::query::Query, AppState};
+use crate::{
+    forms::UserForm,
+    services::{mutation::Mutation, query::Query},
+    AppState,
+};
 
 // TODO: status of api
 #[get("/")]
@@ -43,9 +47,14 @@ async fn delete_user() -> HttpResponse {
 
 // TODO: create user
 #[post("/auth/create")]
-async fn create_account(data: web::Data<AppState>) -> HttpResponse {
-    let _db = &data.db;
-    HttpResponse::Ok().finish()
+async fn create_account(data: web::Data<AppState>, form: web::Json<UserForm>) -> HttpResponse {
+    let db = &data.db;
+    let form = form.into_inner();
+
+    match Mutation::create_user(db, form).await {
+        Ok(user) => HttpResponse::Ok().json(user),
+        Err(err) => HttpResponse::BadRequest().json(err.to_string()),
+    }
 }
 
 #[get("/auth/login")]

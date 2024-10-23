@@ -13,7 +13,7 @@ impl MigrationTrait for Migration {
                     .if_not_exists()
                     .col(uuid(User::Id).primary_key())
                     .col(string_uniq(User::Email))
-                    .col(string(User::Password))
+                    .col(binary(User::Password))
                     .col(string_uniq(User::Name))
                     .col(double(User::Money).default(0.0))
                     .col(big_integer(User::Brilliants).default(0))
