@@ -37,7 +37,7 @@ WORKDIR /app
 
 # install libpq and libsqlite
 RUN apt-get update; \
-    apt-get install --no-install-recommends -y libpq5 openssl libffi7; \
+    apt-get install --no-install-recommends -y libpq5 openssl; \
     rm -rf /var/lib/apt/lists/*
 
 # copy binary and configuration files
