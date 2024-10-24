@@ -19,9 +19,7 @@ RUN cargo build; \
     rm src/*.rs
 
 # copy project source and necessary files
-COPY ./src ./src
-COPY ./migration ./migration
-COPY ./entity ./entity
+COPY . .
 
 # rebuild app with project source
 RUN rm -rf ./target; \
@@ -46,10 +44,10 @@ RUN apt-get update; \
 WORKDIR /app
 
 # copy binary and configuration files
-COPY --from=build /app/target/release/towny-api .
+COPY --from=build /app/target/release/towny-server .
 
 # expose port
 EXPOSE 80
 
 # run the binary
-CMD ["/app/towny-api"]
+CMD ["/app/towny-server"]

@@ -1,6 +1,6 @@
 services:
   backend:
-    container_name: "towny-api"
+    container_name: "towny-server"
     build:
       context: .
       dockerfile: Dockerfile

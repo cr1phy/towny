@@ -1,4 +1,4 @@
-use entity::{user, user::Entity as User};
+use ::entity::{user, user::Entity as User};
 use sea_orm::{prelude::Uuid, DbConn, DbErr, EntityTrait};
 
 pub struct Query;

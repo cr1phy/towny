@@ -74,6 +74,11 @@ async fn login() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
 
+#[get("/auth/refresh-tokens")]
+async fn refresh_tokens() -> HttpResponse {
+    HttpResponse::Ok().finish()
+}
+
 #[get("/auth/logout")]
 async fn logout() -> HttpResponse {
     HttpResponse::Ok().finish()
