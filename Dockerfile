@@ -28,7 +28,7 @@ RUN rm -rf ./target; \
     cargo build --release
 
 # deploy stage
-FROM debian:buster-slim AS deploy
+FROM ubuntu:latest AS deploy
 ENV PORT=80
 
 # create app directory
