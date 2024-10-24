@@ -6,7 +6,7 @@ FROM rust:${RUST_VERSION}-slim AS build
 # install libpq, libsqlite and create new empty binary project
 RUN apt-get update; \
     apt-get install --no-install-recommends -y libpq-dev libssl-dev openssl clang pkg-config; \
-    pkg-config openssl; \ 
+    pkg-config openssl; \
     rm -rf /var/lib/apt/lists/*; \
     USER=root cargo new --bin app
 WORKDIR /app
@@ -37,7 +37,9 @@ WORKDIR /app
 
 # install libpq and libsqlite
 RUN apt-get update; \
-    apt-get install --no-install-recommends -y libpq5 openssl libffi7; \
+    apt-get install --no-install-recommends -y libpq-dev libssl-dev openssl clang pkg-config; \
+    pkg-config openssl; \
+    ldconfig; \
     rm -rf /var/lib/apt/lists/*
 
 # copy binary and configuration files
