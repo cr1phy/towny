@@ -34,12 +34,16 @@ ENV RUST_BACKTRACE=1
 
 # create app directory
 RUN mkdir app
-WORKDIR /app
 
 # install libpq and libsqlite
-RUN apt-get update; \
-    apt-get install --no-install-recommends -y libpq-dev libssl3 libssl3t64 openssl; \
-    rm -rf /var/lib/apt/lists/*
+RUN sudo apt-get update; \
+    sudo apt-get install --no-install-recommends -y libpq-dev libssl3 openssl; \
+    sudo ln -s /usr/local/lib64/libssl.so.3 /usr/lib; \
+    sudo ln -s /usr/local/lib64/libcrypto.so.3 /usr/lib; \
+    sudo ldconfig; \
+    sudo rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
 
 # copy binary and configuration files
 COPY --from=build /app/target/release/towny-api .
