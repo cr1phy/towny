@@ -39,7 +39,7 @@ WORKDIR /app
 RUN apt-get update; \
     apt-get install --no-install-recommends -y libpq-dev libssl-dev openssl clang pkg-config; \
     pkg-config openssl; \
-    ldconfig; \
+    ldconfig /usr/local/lib64/; \
     rm -rf /var/lib/apt/lists/*
 
 # copy binary and configuration files
