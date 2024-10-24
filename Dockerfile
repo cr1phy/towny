@@ -29,7 +29,8 @@ RUN rm -rf ./target; \
 
 # deploy stage
 FROM debian:bookworm-slim AS deploy
-ENV PORT=80
+ENV RUST_LOG=info
+ENV RUST_BACKTRACE=1
 
 # create app directory
 RUN mkdir app
