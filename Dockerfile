@@ -28,7 +28,7 @@ RUN rm -rf ./target; \
     cargo build --release
 
 # deploy stage
-FROM ubuntu:latest AS deploy
+FROM debian:bookworm-slim AS deploy
 ENV PORT=80
 
 # create app directory
