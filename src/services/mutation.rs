@@ -1,7 +1,7 @@
 use ::entity::{user, user::Entity as User};
+use bcrypt::{hash, DEFAULT_COST};
 use sea_orm::*;
 use uuid::Uuid;
-use bcrypt::{hash, DEFAULT_COST};
 
 use crate::forms::UserForm;
 

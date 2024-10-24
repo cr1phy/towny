@@ -41,8 +41,20 @@ async fn get_user(data: web::Data<AppState>, path: web::Path<String>) -> HttpRes
 }
 
 #[post("/user/delete")]
-async fn delete_user() -> HttpResponse {
-    HttpResponse::Ok().finish()
+async fn delete_user(data: web::Data<AppState>, path: web::Path<String>) -> HttpResponse {
+    let db = &data.db;
+
+    let id = path.into_inner();
+    let id = if let Ok(id) = Uuid::from_str(&id) {
+        id
+    } else {
+        return HttpResponse::BadRequest().finish();
+    };
+
+    match Mutation::delete_user(db, id).await {
+        Ok(_) => HttpResponse::Ok().finish(),
+        Err(err) => HttpResponse::InternalServerError().json(err.to_string()),
+    }
 }
 
 // TODO: create user
