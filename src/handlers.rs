@@ -40,7 +40,7 @@ async fn get_user(data: web::Data<AppState>, path: web::Path<String>) -> HttpRes
     }
 }
 
-#[post("/user/delete")]
+#[post("/user/{id}/delete")]
 async fn delete_user(data: web::Data<AppState>, path: web::Path<String>) -> HttpResponse {
     let db = &data.db;
 
